@@ -1,19 +1,20 @@
 package com.qiniu.pili.droid.streaming.demo.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.qiniu.pili.droid.streaming.AVCodecType;
 import com.qiniu.pili.droid.streaming.StreamStatusCallback;
@@ -22,20 +23,21 @@ import com.qiniu.pili.droid.streaming.StreamingProfile;
 import com.qiniu.pili.droid.streaming.StreamingSessionListener;
 import com.qiniu.pili.droid.streaming.StreamingState;
 import com.qiniu.pili.droid.streaming.StreamingStateChangedListener;
-import com.qiniu.pili.droid.streaming.demo.plain.EncodingConfig;
-import com.qiniu.pili.droid.streaming.demo.utils.Config;
+import com.qiniu.pili.droid.streaming.av.common.PLFourCC;
 import com.qiniu.pili.droid.streaming.demo.R;
 import com.qiniu.pili.droid.streaming.demo.core.ExtAudioCapture;
-import com.qiniu.pili.droid.streaming.demo.core.ExtVideoCapture;
+import com.qiniu.pili.droid.streaming.demo.plain.EncodingConfig;
+import com.qiniu.pili.droid.streaming.demo.usb.USBCameraFragment;
+import com.qiniu.pili.droid.streaming.demo.utils.Config;
 import com.qiniu.pili.droid.streaming.demo.utils.Util;
 
 import java.net.URISyntaxException;
 import java.util.List;
 
-public class ImportStreamingActivity extends Activity {
+public class ImportStreamingActivity extends AppCompatActivity {
     private static final String TAG = "ImportStreamingActivity";
 
-    private SurfaceView mSurfaceView;
+//    private SurfaceView mSurfaceView;
     private TextView mLogTextView;
     private TextView mStatusTextView;
     private TextView mStatView;
@@ -51,7 +53,7 @@ public class ImportStreamingActivity extends Activity {
     private boolean mIsReady;
 
     private ExtAudioCapture mExtAudioCapture;
-    private ExtVideoCapture mExtVideoCapture;
+//    private ExtVideoCapture mExtVideoCapture;
 
     private EncodingConfig mEncodingConfig;
 
@@ -117,9 +119,9 @@ public class ImportStreamingActivity extends Activity {
     public void initView() {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        setRequestedOrientation(Config.SCREEN_ORIENTATION);
+//        setRequestedOrientation(Config.SCREEN_ORIENTATION);
         setContentView(R.layout.activity_import_streaming);
-        mSurfaceView = (SurfaceView) findViewById(R.id.ext_camerapreview_surfaceview);
+//        mSurfaceView = (SurfaceView) findViewById(R.id.ext_camerapreview_surfaceview);
         mLogTextView = (TextView) findViewById(R.id.log_info);
         mStatusTextView = (TextView) findViewById(R.id.streamingStatus);
         mStatView = (TextView) findViewById(R.id.stream_status);
@@ -139,14 +141,32 @@ public class ImportStreamingActivity extends Activity {
                 }
             }
         });
+
+        USBCameraFragment usbCameraFragment = new USBCameraFragment();
+        usbCameraFragment.callBack = (bytes, width, height, dataFormat) -> {
+            if (bytes != null) {
+                mStreamingManager.inputVideoFrame(bytes, width, height, 90, false, PLFourCC.FOURCC_NV21, System.nanoTime());
+                if (System.currentTimeMillis()/1000 % 4 == 0) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((TextView)findViewById(R.id.tvDebug)).setText("分辨率: " + width + "x" + height);
+                        }
+                    });
+                }
+            }
+        };
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentContainer, usbCameraFragment);
+        transaction.commitAllowingStateLoss();
     }
 
     /**
      * 初始化外部采集实例
      */
     private void initExtCapture() {
-        mExtVideoCapture = new ExtVideoCapture(mSurfaceView);
-        mExtVideoCapture.setOnPreviewFrameCallback(mOnPreviewFrameCallback);
+//        mExtVideoCapture = new ExtVideoCapture(mSurfaceView);
+//        mExtVideoCapture.setOnPreviewFrameCallback(mOnPreviewFrameCallback);
         mExtAudioCapture = new ExtAudioCapture();
         mExtAudioCapture.setOnAudioFrameCapturedListener(mOnAudioFrameCapturedListener);
     }
@@ -250,12 +270,12 @@ public class ImportStreamingActivity extends Activity {
         mStreamingManager.setStreamingStateListener(mStreamingStateChangedListener);
     }
 
-    private ExtVideoCapture.OnPreviewFrameCallback mOnPreviewFrameCallback = new ExtVideoCapture.OnPreviewFrameCallback() {
-        @Override
-        public void onPreviewFrameCaptured(byte[] data, int width, int height, int orientation, boolean mirror, int fmt, long tsInNanoTime) {
-            mStreamingManager.inputVideoFrame(data, width, height, orientation, false, fmt, tsInNanoTime);
-        }
-    };
+//    private ExtVideoCapture.OnPreviewFrameCallback mOnPreviewFrameCallback = new ExtVideoCapture.OnPreviewFrameCallback() {
+//        @Override
+//        public void onPreviewFrameCaptured(byte[] data, int width, int height, int orientation, boolean mirror, int fmt, long tsInNanoTime) {
+//            mStreamingManager.inputVideoFrame(data, width, height, orientation, false, fmt, tsInNanoTime);
+//        }
+//    };
 
     private ExtAudioCapture.OnAudioFrameCapturedListener mOnAudioFrameCapturedListener = new ExtAudioCapture.OnAudioFrameCapturedListener() {
         @Override

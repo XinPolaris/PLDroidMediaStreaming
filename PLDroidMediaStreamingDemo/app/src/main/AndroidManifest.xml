@@ -40,26 +40,25 @@
         <activity
             android:name=".activity.AVStreamingActivity"
             android:configChanges="orientation|screenSize"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
+            
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
         <!--android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen" >-->
         <activity
             android:name=".activity.AudioStreamingActivity"
             android:label="@string/title_activity_audio_streaming"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar" />
+             />
 
         <activity
             android:name=".activity.ScreenStreamingActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
+            
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
         <activity
             android:name=".activity.ImportStreamingActivity"
             android:configChanges="orientation|screenSize"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
         <activity

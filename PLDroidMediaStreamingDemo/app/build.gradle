@@ -1,13 +1,15 @@
-apply plugin: 'com.android.application'
-
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
 android {
     compileSdkVersion 29
     buildToolsVersion '29.0.3'
 
     defaultConfig {
         applicationId "com.qiniu.pili.droid.streaming.demo"
-        minSdkVersion 18
-        targetSdkVersion 29
+        minSdkVersion 19
+        targetSdkVersion 27
         versionCode 76
         versionName "3.1.3"
     }
@@ -23,6 +25,9 @@ android {
         // but continue the build even when errors are found:
         abortOnError false
     }
+    viewBinding{
+        enabled = true
+    }
 }
 
 dependencies {
@@ -35,7 +40,6 @@ dependencies {
     // 扫码相关 jar 包，非必须
     implementation 'com.journeyapps:zxing-android-embedded:3.0.2@aar'
     implementation 'com.google.zxing:core:3.3.3'
-    implementation 'com.android.support:appcompat-v7:28.0.0'
     // xCrash
     implementation 'com.iqiyi.xcrash:xcrash-android-lib:3.0.0'
 
@@ -43,6 +47,17 @@ dependencies {
         implementation project(':library')
     } else {
         // 推流 SDK jar 包，为推流 SDK 必须依赖的库
-        implementation fileTree(include: ['*.jar'], dir: 'libs')
+        implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
     }
+
+    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+//    implementation 'androidx.annotation:annotation:1.5.0'
+
+    //    implementation 'com.github.jiangdongguo.AndroidUSBCamera:libausbc:3.2.10'
+    implementation "com.github.jiangdongguo.AndroidUSBCamera:libuvc:3.2.10"
+    implementation "com.github.jiangdongguo.AndroidUSBCamera:libnative:3.2.10"
+    implementation "com.github.jiangdongguo.AndroidUSBCamera:libpush:3.2.10"
 }

@@ -5,14 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_floating_material_dark"
-    tools:context=".activity.ImportStreamingActivity" >
+    tools:context=".activity.ImportStreamingActivity">
 
-    <SurfaceView
-        android:id="@+id/ext_camerapreview_surfaceview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <!--    <SurfaceView-->
+    <!--        android:id="@+id/ext_camerapreview_surfaceview"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content" />-->
+
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black" />
 
     <include layout="@layout/status" />
+
+    <TextView
+        android:id="@+id/tvDebug"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="20dp"
+        android:textColor="#00FF00"
+        tools:text="300x200" />
 
     <include layout="@layout/camera_button_holder" />
 

@@ -7,9 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,6 +16,10 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -42,7 +43,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     private static final String GENERATE_STREAM_TEXT = "https://api-demo.qnsdk.com/v1/live/stream/";
@@ -88,7 +89,7 @@ public class MainActivity extends FragmentActivity {
         } else {
             mRtmpPushButton.setChecked(true);
         }
-        mInputTextTV.setText(publishUrl);
+        mInputTextTV.setText("rtmp://115.238.101.20:2045/HX/HX1208");
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         mEncodingConfigFragment = (EncodingConfigFragment) fragmentManager.findFragmentById(R.id.encoding_config_fragment);
@@ -129,18 +130,20 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         mPermissionChecker.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        if (requestCode ==  IntentIntegrator.REQUEST_CODE) {
+        if (requestCode == IntentIntegrator.REQUEST_CODE) {
             IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-            if(result != null) {
-                if(result.getContents() == null) {
+            if (result != null) {
+                if (result.getContents() == null) {
                     Toast.makeText(this, "扫码取消！", Toast.LENGTH_SHORT).show();
                 } else {
                     mInputTextTV.setText(result.getContents());
@@ -293,6 +296,7 @@ public class MainActivity extends FragmentActivity {
 
             }
         });
+        mStreamTypeSpinner.setSelection(2);
     }
 
     /**

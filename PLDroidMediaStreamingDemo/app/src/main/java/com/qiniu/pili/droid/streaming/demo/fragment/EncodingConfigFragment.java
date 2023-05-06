@@ -1,39 +1,5 @@
 package com.qiniu.pili.droid.streaming.demo.fragment;
 
-import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.annotation.Nullable;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.TextView;
-
-import com.github.angads25.filepicker.controller.DialogSelectionListener;
-import com.github.angads25.filepicker.model.DialogConfigs;
-import com.github.angads25.filepicker.model.DialogProperties;
-import com.github.angads25.filepicker.view.FilePickerDialog;
-import com.qiniu.pili.droid.streaming.AVCodecType;
-import com.qiniu.pili.droid.streaming.StreamingProfile;
-import com.qiniu.pili.droid.streaming.WatermarkSetting;
-import com.qiniu.pili.droid.streaming.demo.R;
-import com.qiniu.pili.droid.streaming.demo.plain.EncodingConfig;
-import com.qiniu.pili.droid.streaming.demo.utils.Config;
-import com.qiniu.pili.droid.streaming.demo.utils.ToastUtils;
-
-import java.io.File;
-
 import static com.qiniu.pili.droid.streaming.StreamingProfile.AUDIO_QUALITY_HIGH1;
 import static com.qiniu.pili.droid.streaming.StreamingProfile.AUDIO_QUALITY_HIGH2;
 import static com.qiniu.pili.droid.streaming.StreamingProfile.AUDIO_QUALITY_LOW1;
@@ -49,6 +15,40 @@ import static com.qiniu.pili.droid.streaming.StreamingProfile.VIDEO_QUALITY_LOW3
 import static com.qiniu.pili.droid.streaming.StreamingProfile.VIDEO_QUALITY_MEDIUM1;
 import static com.qiniu.pili.droid.streaming.StreamingProfile.VIDEO_QUALITY_MEDIUM2;
 import static com.qiniu.pili.droid.streaming.StreamingProfile.VIDEO_QUALITY_MEDIUM3;
+
+import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
+
+import com.github.angads25.filepicker.controller.DialogSelectionListener;
+import com.github.angads25.filepicker.model.DialogConfigs;
+import com.github.angads25.filepicker.model.DialogProperties;
+import com.github.angads25.filepicker.view.FilePickerDialog;
+import com.qiniu.pili.droid.streaming.AVCodecType;
+import com.qiniu.pili.droid.streaming.StreamingProfile;
+import com.qiniu.pili.droid.streaming.WatermarkSetting;
+import com.qiniu.pili.droid.streaming.demo.R;
+import com.qiniu.pili.droid.streaming.demo.plain.EncodingConfig;
+import com.qiniu.pili.droid.streaming.demo.utils.Config;
+import com.qiniu.pili.droid.streaming.demo.utils.ToastUtils;
+
+import java.io.File;
 
 /**
  * 推流编码配置项 Fragment，仅用作 demo 中获取配置信息，后续在推流初始化时配置 StreamingProfile

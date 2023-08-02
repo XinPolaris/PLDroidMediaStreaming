@@ -28,6 +28,7 @@ import com.qiniu.pili.droid.streaming.StreamingEnv;
 import com.qiniu.pili.droid.streaming.common.FileLogHelper;
 import com.qiniu.pili.droid.streaming.demo.activity.AVStreamingActivity;
 import com.qiniu.pili.droid.streaming.demo.activity.AudioStreamingActivity;
+import com.qiniu.pili.droid.streaming.demo.activity.EmptyActivity;
 import com.qiniu.pili.droid.streaming.demo.activity.ImportStreamingActivity;
 import com.qiniu.pili.droid.streaming.demo.activity.ScreenStreamingActivity;
 import com.qiniu.pili.droid.streaming.demo.fragment.CameraConfigFragment;
@@ -244,17 +245,18 @@ public class MainActivity extends AppCompatActivity {
 
     public void scanQRCode(View v) {
         // API < M, no need to request permissions, so always true.
-        boolean isPermissionOK = Build.VERSION.SDK_INT < Build.VERSION_CODES.M || mPermissionChecker.checkPermission();
-        if (!isPermissionOK) {
-            Util.showToast(this, "请授予相关权限!!!");
-            return;
-        }
-        IntentIntegrator integrator = new IntentIntegrator(this);
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
-        integrator.setOrientationLocked(true);
-        integrator.setCameraId(0);
-        integrator.setBeepEnabled(true);
-        integrator.initiateScan();
+//        boolean isPermissionOK = Build.VERSION.SDK_INT < Build.VERSION_CODES.M || mPermissionChecker.checkPermission();
+//        if (!isPermissionOK) {
+//            Util.showToast(this, "请授予相关权限!!!");
+//            return;
+//        }
+//        IntentIntegrator integrator = new IntentIntegrator(this);
+//        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
+//        integrator.setOrientationLocked(true);
+//        integrator.setCameraId(0);
+//        integrator.setBeepEnabled(true);
+//        integrator.initiateScan();
+        startActivity(new Intent(this, EmptyActivity.class));
     }
 
     public void toggleEncodingConfigFragment(View v) {

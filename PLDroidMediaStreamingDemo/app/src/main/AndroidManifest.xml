@@ -65,6 +65,8 @@
             android:name="com.qiniu.pili.droid.streaming.screen.ScreenCaptureRequestActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
+        <activity android:name=".activity.EmptyActivity"/>
+
         <service android:name=".service.KeepAppAliveService" />
 
         <service

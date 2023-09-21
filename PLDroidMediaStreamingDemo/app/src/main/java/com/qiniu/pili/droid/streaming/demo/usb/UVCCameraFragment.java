@@ -24,7 +24,6 @@ import com.hsj.camera.CameraView;
 import com.hsj.camera.IFrameCallback;
 import com.hsj.camera.IRender;
 import com.hsj.camera.ISurfaceCallback;
-import com.qiniu.pili.droid.streaming.demo.R;
 import com.qiniu.pili.droid.streaming.demo.databinding.FragmentImportStreamingUvcBinding;
 
 import java.io.DataOutputStream;
@@ -105,7 +104,7 @@ public class UVCCameraFragment extends Fragment implements ISurfaceCallback {
         }
         this.pid = devices[0].getProductId();
         this.vid = devices[0].getVendorId();
-
+        Log.d(TAG, "initCamera: pis->" + pid + ", vid->" + vid);
         create();
         start();
     }
@@ -315,6 +314,7 @@ public class UVCCameraFragment extends Fragment implements ISurfaceCallback {
 
     public interface UVCCallback {
         void onFrame(ByteBuffer buffer, int width, int height);
+
         void onSizeChange();
     }
 }

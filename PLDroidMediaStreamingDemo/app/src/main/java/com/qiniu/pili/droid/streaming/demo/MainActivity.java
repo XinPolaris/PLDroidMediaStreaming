@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             mRtmpPushButton.setChecked(true);
         }
-        mInputTextTV.setText("rtmp://115.238.101.20:2045/HX/HX1208");
+        mInputTextTV.setText("rtmp://122.224.95.114:2045/2xenzweetxzqq/HX1208");
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         mEncodingConfigFragment = (EncodingConfigFragment) fragmentManager.findFragmentById(R.id.encoding_config_fragment);

@@ -55,4 +55,20 @@ ext {
             leak_canary                 : 'com.squareup.leakcanary:leakcanary-android:2.4',
     ]
 
+//    //    19寸屏
+//    sign = [
+//            storeFile : file("./sign/platform_debug.keystore"),
+//            storePassword : "android",
+//            keyAlias : "androiddebugkey",
+//            keyPassword : "android",
+//    ]
+
+//    YPro灶蒸烤
+    sign = [
+            storeFile : file("./sign/signway_r16.jks"),
+            storePassword : "123456",
+            keyAlias : "signway",
+            keyPassword : "123456",
+    ]
+
 }

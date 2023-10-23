@@ -128,6 +128,12 @@ public class ImportStreamingActivity extends AppCompatActivity {
         mStatusTextView = (TextView) findViewById(R.id.streamingStatus);
         mStatView = (TextView) findViewById(R.id.stream_status);
         mShutterButton = (Button) findViewById(R.id.toggleRecording_button);
+        findViewById(R.id.btnBack).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         mShutterButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,7 +155,7 @@ public class ImportStreamingActivity extends AppCompatActivity {
             @Override
             public void onFrame(ByteBuffer buffer, int width, int height) {
                 if (buffer != null) {
-                    mStreamingManager.inputVideoFrame(buffer,buffer.capacity(), width, height, 90, false, PLFourCC.FOURCC_NV12, System.nanoTime());
+                    mStreamingManager.inputVideoFrame(buffer,buffer.capacity(), width, height, 270, false, PLFourCC.FOURCC_NV12, System.nanoTime());
                 }
             }
 

@@ -2,7 +2,7 @@
 apply from: 'config.gradle'
 buildscript {
     ext {
-        kotlin_version = '1.5.20'
+        kotlin_version = '1.8.0'
     }
     repositories {
         jcenter()
@@ -23,6 +23,10 @@ allprojects {
         google()
         mavenCentral()
         maven { url "https://jitpack.io" }
+        maven {
+            url "http://10.49.2.59/fiks/maven/raw/master"
+            allowInsecureProtocol = true
+        }
     }
 }
 

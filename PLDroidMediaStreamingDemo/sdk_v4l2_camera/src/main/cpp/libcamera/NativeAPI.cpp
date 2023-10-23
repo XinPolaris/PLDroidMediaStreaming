@@ -8,7 +8,7 @@
 
 #define TAG "NativeAPI"
 #define OBJECT_ID "nativeObj"
-#define CLASS_NAME "com/hsj/camera/CameraAPI"
+#define CLASS_NAME "com/hsj/camera/V4L2Camera"
 
 typedef jlong CAMERA_ID;
 
@@ -131,6 +131,18 @@ static ActionInfo nativePreview(JNIEnv *env, jobject thiz, CAMERA_ID cameraId, j
     return status;
 }
 
+static jint nativeCaptureImage(JNIEnv *env, jobject thiz, CAMERA_ID cameraId, jstring filePath,
+                               jobject callback) {
+    auto *camera = reinterpret_cast<CameraAPI *>(cameraId);
+    ActionInfo status = ACTION_ERROR_DESTROY;
+    if (LIKELY(camera)) {
+        jobject _capture_callback = env->NewGlobalRef(callback);
+        status = camera->captureImage(env, filePath, _capture_callback);
+    }
+    LOGI(TAG, "camera->imageCapture(): %d", status);
+    return status;
+}
+
 static ActionInfo nativeStart(JNIEnv *env, jobject thiz, CAMERA_ID cameraId) {
     auto *camera = reinterpret_cast<CameraAPI *>(cameraId);
     ActionInfo status = ACTION_ERROR_DESTROY;
@@ -174,6 +186,7 @@ static const JNINativeMethod METHODS[] = {
         {"nativeSupportSize",   "(J)[[I",                              (void *) nativeSupportSize},
         {"nativeFrameSize",     "(JIII)I",                             (void *) nativeFrameSize},
         {"nativePreview",       "(JLandroid/view/Surface;)I",          (void *) nativePreview},
+        {"nativeCaptureImage","(JLjava/lang/String;Lcom/hsj/camera/IImageCaptureCallback;)I",(void *) nativeCaptureImage},
         {"nativeStart",         "(J)I",                                (void *) nativeStart},
         {"nativeStop",          "(J)I",                                (void *) nativeStop},
         {"nativeDestroy",       "(J)I",                                (void *) nativeDestroy},

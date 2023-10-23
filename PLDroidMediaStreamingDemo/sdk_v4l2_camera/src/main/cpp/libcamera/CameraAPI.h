@@ -49,6 +49,10 @@ private:
     jobject frameCallback;
     jmethodID frameCallback_onFrame;
 
+    jobject captureImageCallback = nullptr;
+    const char *captureImageFilePath;
+    jmethodID captureImageCallback_onCapture = nullptr;
+
     pthread_t thread_camera;
     volatile StatusInfo status;
     inline const StatusInfo getStatus() const;
@@ -57,6 +61,7 @@ private:
     static void* loopThread(void *args);
     void loopFrame(JNIEnv *env, CameraAPI *camera);
     void sendFrame(JNIEnv *env, uint8_t *data);
+    void captureImage(JNIEnv *env, void *raw_buffer, size_t raw_size);
     void renderFrame(uint8_t *data);
 
 public:
@@ -68,6 +73,7 @@ public:
     ActionInfo getSupportSize(std::vector<std::pair<int, int>> &sizes);
     ActionInfo setFrameSize(int width, int height, int frame_format);
     ActionInfo setFrameCallback(JNIEnv *env, jobject frame_callback);
+    ActionInfo captureImage(JNIEnv *env, jstring filePath, jobject capture_callback);
     ActionInfo setPreview(ANativeWindow *window);
     ActionInfo start();
     ActionInfo stop();

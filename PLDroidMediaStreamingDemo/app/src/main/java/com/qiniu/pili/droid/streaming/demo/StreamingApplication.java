@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.fotile.fiks.flog.Flog;
 import com.qiniu.pili.droid.streaming.StreamingEnv;
 import com.qiniu.pili.droid.streaming.common.FileLogHelper;
 import com.qiniu.pili.droid.streaming.demo.service.KeepAppAliveService;
@@ -58,6 +59,7 @@ public class StreamingApplication extends Application {
                 stopService();
             }
         });
+        Flog.init(this, true);
     }
 
     @Override

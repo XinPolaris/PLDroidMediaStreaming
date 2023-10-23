@@ -138,6 +138,9 @@ void CameraAPI::loopFrame(JNIEnv *env, CameraAPI *camera) {
             //LOGI(TAG, "mjpeg interval time = %ld", timeMs() - time1);
             //time1 = timeMs();
 
+            //capture image
+            captureImage(env, camera->buffers[buffer.index].start, buffer.bytesused);
+
             //MJPEG->NV12/YUV422
             uint8_t *data = camera->decoder->convert2YUV(camera->buffers[buffer.index].start, buffer.bytesused);
             //LOGI(TAG, "decodeTime=%lld", timeMs() - time1)
@@ -184,6 +187,26 @@ void CameraAPI::sendFrame(JNIEnv *env, uint8_t *data) {
     }
 }
 
+void CameraAPI::captureImage(JNIEnv *env, void *raw_buffer, size_t raw_size) {
+    if (captureImageCallback != nullptr && captureImageFilePath != nullptr && captureImageCallback_onCapture && LIKELY(raw_buffer)) {
+        LOGI(TAG, "captureImage start");
+        LOGI(TAG, "captureImage %s", captureImageFilePath);
+        FILE* file = fopen(captureImageFilePath, "w+"); // 打开一个文件
+        if (file != nullptr) {
+            fwrite(raw_buffer, raw_size, 1, file); // 写入文件
+            fclose(file); // 写入完成，关闭文件
+        }
+        env->CallVoidMethod(captureImageCallback, captureImageCallback_onCapture, env->NewStringUTF(captureImageFilePath));
+        env->ExceptionClear();
+
+        //release
+        env->DeleteGlobalRef(captureImageCallback);
+        captureImageCallback = nullptr;
+        captureImageCallback_onCapture = nullptr;
+        captureImageFilePath = nullptr;
+    }
+}
+
 //=======================================Public=====================================================
 
 ActionInfo CameraAPI::connect(unsigned int target_pid, unsigned int target_vid) {
@@ -219,6 +242,7 @@ ActionInfo CameraAPI::connect(unsigned int target_pid, unsigned int target_vid) 
         } else {
             const char *deviceName = dev_video_name.data();
             fd = open(deviceName, O_RDWR | O_NONBLOCK, S_IRWXU);
+            LOGI(TAG, "open: fd=%d", fd);
             if (0 > fd) {
                 LOGE(TAG, "open: %s failed, %s", deviceName, strerror(errno));
                 action = ACTION_ERROR_OPEN_FAIL;
@@ -405,6 +429,37 @@ ActionInfo CameraAPI::setFrameCallback(JNIEnv *env, jobject frame_callback) {
     }
 }
 
+ActionInfo CameraAPI::captureImage(JNIEnv *env, jstring filePath, jobject capture_callback) {
+    if (STATUS_RUN == getStatus()) {
+        if (captureImageCallback) {
+            LOGD(TAG, "captureImage: 1");
+            env->DeleteGlobalRef(captureImageCallback);
+        }
+        if (capture_callback) {
+            LOGD(TAG, "captureImage: 2");
+            jclass clazz = env->GetObjectClass(capture_callback);
+            if (LIKELY(clazz)) {
+                LOGD(TAG, "captureImage: 3");
+                captureImageCallback = capture_callback;
+                captureImageCallback_onCapture = env->GetMethodID(clazz, "onImageCapture", "(Ljava/lang/String;)V");
+                captureImageFilePath = env->GetStringUTFChars(filePath, 0);
+            }
+            env->ExceptionClear();
+            if (!captureImageCallback_onCapture) {
+                LOGD(TAG, "captureImage: 4");
+                env->DeleteGlobalRef(captureImageCallback);
+                captureImageCallback = nullptr;
+                captureImageCallback_onCapture = nullptr;
+                captureImageFilePath = nullptr;
+            }
+        }
+        return ACTION_SUCCESS;
+    } else {
+        LOGW(TAG, "captureImage: error status, %d", getStatus());
+        return ACTION_ERROR_CALLBACK;
+    }
+}
+
 ActionInfo CameraAPI::setPreview(ANativeWindow *window) {
     if (STATUS_INIT == getStatus()) {
         if (preview != NULL) {
@@ -436,9 +491,17 @@ ActionInfo CameraAPI::start() {
             //1-start stream
             enum v4l2_buf_type type;
             type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-            if (0 > ioctl(fd, VIDIOC_STREAMON, &type)) {
-                LOGE(TAG, "start: ioctl VIDIOC_STREAMON failed, %s", strerror(errno));
+            int streamOnRet = ioctl(fd, VIDIOC_STREAMON, &type);
+            if (0 > streamOnRet) {
+                LOGE(TAG, "start: ioctl VIDIOC_STREAMON failed, %s(streamOnRet->%d)", strerror(errno), streamOnRet);
+                //5-release buffer
+                for (int i = 0; i < MAX_BUFFER_COUNT; ++i) {
+                    if (0 != munmap(buffers[i].start, buffers[i].length)) {
+                        LOGW(TAG, "start: stop: munmap failed");
+                    }
+                }
             } else {
+                LOGI(TAG, "start: ioctl VIDIOC_STREAMON success, %s(streamOnRet->%d)", strerror(errno), streamOnRet);
                 status = STATUS_RUN;
                 //3-start thread loop frame
                 if (0 == pthread_create(&thread_camera, NULL, loopThread, (void *) this)) {
@@ -493,6 +556,7 @@ ActionInfo CameraAPI::stop() {
 }
 
 ActionInfo CameraAPI::close() {
+    LOGI(TAG, "close: fd=%d", fd);
     ActionInfo action = ACTION_SUCCESS;
     if (STATUS_INIT == getStatus()) {
         status = STATUS_CREATE;
@@ -522,6 +586,13 @@ ActionInfo CameraAPI::close() {
         }
     } else {
         LOGW(TAG, "close: error status, %d", getStatus());
+        //1-close fd
+        if (0 > ::close(fd)) {
+            LOGE(TAG, "close: failed, %s", strerror(errno));
+            action = ACTION_ERROR_CLOSE;
+        } else {
+            LOGI(TAG, "close: success");
+        }
     }
     return action;
 }

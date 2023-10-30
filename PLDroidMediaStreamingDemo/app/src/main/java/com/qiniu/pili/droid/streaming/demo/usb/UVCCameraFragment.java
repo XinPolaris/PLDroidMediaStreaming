@@ -89,7 +89,7 @@ public class UVCCameraFragment extends Fragment implements ISurfaceCallback {
     private LinearLayout ll;
     DebugTool debugTool;
     private int[][] supportFrameSize;
-    static int curFrameSizeIndex;
+    static int curFrameSizeIndex = 6;
     static int[] curFrameSize;
 
     private void initCamera() {

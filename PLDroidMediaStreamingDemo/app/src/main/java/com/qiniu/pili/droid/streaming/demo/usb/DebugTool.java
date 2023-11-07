@@ -13,7 +13,7 @@ import java.nio.ByteBuffer;
  * Created by HuangXin on 2023/6/27.
  */
 class DebugTool {
-    private static final String TAG = "DebugTool";
+    private static final String TAG = "UVCCameraFragment";
     private final TextView textView;
     private final long startTime = System.currentTimeMillis();
     private long recordCount;

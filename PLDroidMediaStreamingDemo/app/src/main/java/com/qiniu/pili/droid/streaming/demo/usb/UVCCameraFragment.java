@@ -184,7 +184,6 @@ public class UVCCameraFragment extends Fragment implements ISurfaceCallback {
 
         @Override
         public void onFrame(ByteBuffer data) {
-            Log.i(TAG, "onFrame: ");
             debugTool.onDataCallback(data, 0, curFrameSize[0], curFrameSize[1]);
             callBack.onFrame(data, curFrameSize[0], curFrameSize[1]);
         }

@@ -1,3 +1,1 @@
 include ':app'
-include ':sdk_v4l2_camera'
-project(':sdk_v4l2_camera').projectDir = new File('D:\\project\\android_camera_v4l2\\sdk_v4l2_camera')

@@ -77,4 +77,6 @@ dependencies {
     implementation "com.github.jiangdongguo.AndroidUSBCamera:libpush:3.2.10"
 
     implementation 'com.fotile.fiks:flog:1.0.0-04'
+
+    implementation(project(':sdk_v4l2_camera'))
 }

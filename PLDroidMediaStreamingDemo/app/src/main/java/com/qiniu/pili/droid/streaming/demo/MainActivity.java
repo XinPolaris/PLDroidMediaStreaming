@@ -90,7 +90,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             mRtmpPushButton.setChecked(true);
         }
-        mInputTextTV.setText("rtmp://qvs-publish.fotile.com.cn:2045/fotile_video/HX1208");
+//        mInputTextTV.setText("rtmp://qvs-publish.fotile.com.cn:2045/fotile_video/HX1208");
+        mInputTextTV.setText("rtmp://122.224.95.114:2045/2xenzweetxzqq/HX1208");
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         mEncodingConfigFragment = (EncodingConfigFragment) fragmentManager.findFragmentById(R.id.encoding_config_fragment);
@@ -200,14 +201,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickCopyPlayUrl(View v) {
-        String publishUrl = mInputTextTV.getText().toString().trim();
-        if (!isQNPublishUrl(publishUrl)) {
-            Util.showToast(this, "仅支持复制 demo 内置推流地址对应的播放链接！");
-            return;
-        }
-        String playUrl = QN_PLAY_URL_PREFIX + getStreamName(publishUrl);
-        copyToClipboard(playUrl);
-        Util.showToast(this, "播放链接 " + playUrl + " 已经复制到粘贴板！");
+//        String publishUrl = mInputTextTV.getText().toString().trim();
+//        if (!isQNPublishUrl(publishUrl)) {
+//            Util.showToast(this, "仅支持复制 demo 内置推流地址对应的播放链接！");
+//            return;
+//        }
+//        String playUrl = QN_PLAY_URL_PREFIX + getStreamName(publishUrl);
+//        copyToClipboard(playUrl);
+//        Util.showToast(this, "播放链接 " + playUrl + " 已经复制到粘贴板！");
+        System.exit(0);
     }
 
     public void onClickCheckAuth(View v) {

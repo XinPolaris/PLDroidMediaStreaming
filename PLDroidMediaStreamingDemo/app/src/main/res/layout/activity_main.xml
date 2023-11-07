@@ -225,7 +225,7 @@
             android:layout_weight="1"
             android:textSize="12sp"
             android:onClick="onClickCopyPlayUrl"
-            android:text="PLAY URL" />
+            android:text="Exit" />
 
         <Button
             android:id="@+id/reauth_btn"

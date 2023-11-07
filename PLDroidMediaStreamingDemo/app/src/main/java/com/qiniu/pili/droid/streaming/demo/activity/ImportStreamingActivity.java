@@ -27,11 +27,12 @@ import com.qiniu.pili.droid.streaming.av.common.PLFourCC;
 import com.qiniu.pili.droid.streaming.demo.R;
 import com.qiniu.pili.droid.streaming.demo.core.ExtAudioCapture;
 import com.qiniu.pili.droid.streaming.demo.plain.EncodingConfig;
-import com.qiniu.pili.droid.streaming.demo.usb.USBCameraFragment;
 import com.qiniu.pili.droid.streaming.demo.usb.UVCCameraFragment;
 import com.qiniu.pili.droid.streaming.demo.utils.Config;
 import com.qiniu.pili.droid.streaming.demo.utils.Util;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.util.List;
@@ -39,7 +40,7 @@ import java.util.List;
 public class ImportStreamingActivity extends AppCompatActivity {
     private static final String TAG = "ImportStreamingActivity";
 
-//    private SurfaceView mSurfaceView;
+    //    private SurfaceView mSurfaceView;
     private TextView mLogTextView;
     private TextView mStatusTextView;
     private TextView mStatView;
@@ -115,6 +116,8 @@ public class ImportStreamingActivity extends AppCompatActivity {
         mStreamingManager.destroy();
     }
 
+    boolean isSave = false;
+
     /**
      * 初始化外部导入推流 demo 相关的视图控件
      */
@@ -149,13 +152,30 @@ public class ImportStreamingActivity extends AppCompatActivity {
                 }
             }
         });
-
         UVCCameraFragment usbCameraFragment = new UVCCameraFragment();
         usbCameraFragment.callBack = new UVCCameraFragment.UVCCallback() {
             @Override
             public void onFrame(ByteBuffer buffer, int width, int height) {
                 if (buffer != null) {
-                    mStreamingManager.inputVideoFrame(buffer,buffer.capacity(), width, height, 270, false, PLFourCC.FOURCC_NV12, System.nanoTime());
+                    mStreamingManager.inputVideoFrame(buffer, buffer.capacity(), width, height, 0, false, PLFourCC.FOURCC_I420, System.nanoTime());
+
+                    if (!isSave) {
+                        isSave = true;
+                        try {
+                            File file = new File("/sdcard/yuvtest");
+                            file.delete();
+                            file.createNewFile();
+                            FileOutputStream fe = new FileOutputStream(file, true);
+                            byte[] arr = new byte[buffer.remaining()];
+                            buffer.get(arr);
+                            fe.write(arr);
+                            fe.flush();
+                            fe.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
                 }
             }
 
@@ -341,7 +361,7 @@ public class ImportStreamingActivity extends AppCompatActivity {
 
     /**
      * 码流信息回调，回调当前推流的音视频码率、帧率等信息
-     *
+     * <p>
      * 注意：回调在非 UI 线程，UI 操作需要做特殊处理！！！
      */
     private StreamStatusCallback mStreamStatusCallback = new StreamStatusCallback() {

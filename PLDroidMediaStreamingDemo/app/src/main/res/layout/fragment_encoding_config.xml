@@ -210,7 +210,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
-                    android:text="480" />
+                    android:text="1280" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -222,7 +222,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
-                    android:text="848" />
+                    android:text="720" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -241,13 +241,13 @@
                 android:id="@+id/orientation_portrait"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
                 android:text="Portrait" />
 
             <RadioButton
                 android:id="@+id/orientation_landscape"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="true"
                 android:text="Landscape" />
         </RadioGroup>
 

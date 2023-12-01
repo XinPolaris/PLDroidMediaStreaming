@@ -56,4 +56,44 @@ public class EncodingConfig implements Serializable {
     public int mAudioQualityCustomBitrate;
 
     public StreamingProfile.YuvFilterMode mYuvFilterMode;
+
+    @Override
+    public String toString() {
+        return "EncodingConfig{" +
+                "mCodecType=" + mCodecType +
+                ", mIsAudioOnly=" + mIsAudioOnly +
+                ", mIsVideoQualityPreset=" + mIsVideoQualityPreset +
+                ", mVideoQualityPreset=" + mVideoQualityPreset +
+                ", mVideoQualityCustomFPS=" + mVideoQualityCustomFPS +
+                ", mVideoQualityCustomBitrate=" + mVideoQualityCustomBitrate +
+                ", mVideoQualityCustomMaxKeyFrameInterval=" + mVideoQualityCustomMaxKeyFrameInterval +
+                ", mVideoQualityCustomProfile=" + mVideoQualityCustomProfile +
+                ", mIsVideoSizePreset=" + mIsVideoSizePreset +
+                ", mVideoSizePreset=" + mVideoSizePreset +
+                ", mVideoSizeCustomWidth=" + mVideoSizeCustomWidth +
+                ", mVideoSizeCustomHeight=" + mVideoSizeCustomHeight +
+                ", mVideoOrientationPortrait=" + mVideoOrientationPortrait +
+                ", mVideoRateControlQuality=" + mVideoRateControlQuality +
+                ", mBitrateAdjustMode=" + mBitrateAdjustMode +
+                ", mAdaptiveBitrateMin=" + mAdaptiveBitrateMin +
+                ", mAdaptiveBitrateMax=" + mAdaptiveBitrateMax +
+                ", mVideoFPSControl=" + mVideoFPSControl +
+                ", mIsWatermarkEnabled=" + mIsWatermarkEnabled +
+                ", mWatermarkAlpha=" + mWatermarkAlpha +
+                ", mWatermarkSize=" + mWatermarkSize +
+                ", mWatermarkCustomWidth=" + mWatermarkCustomWidth +
+                ", mWatermarkCustomHeight=" + mWatermarkCustomHeight +
+                ", mIsWatermarkLocationPreset=" + mIsWatermarkLocationPreset +
+                ", mWatermarkLocationPreset=" + mWatermarkLocationPreset +
+                ", mWatermarkLocationCustomX=" + mWatermarkLocationCustomX +
+                ", mWatermarkLocationCustomY=" + mWatermarkLocationCustomY +
+                ", mIsPictureStreamingEnabled=" + mIsPictureStreamingEnabled +
+                ", mPictureStreamingFilePath='" + mPictureStreamingFilePath + '\'' +
+                ", mIsAudioQualityPreset=" + mIsAudioQualityPreset +
+                ", mAudioQualityPreset=" + mAudioQualityPreset +
+                ", mAudioQualityCustomSampleRate=" + mAudioQualityCustomSampleRate +
+                ", mAudioQualityCustomBitrate=" + mAudioQualityCustomBitrate +
+                ", mYuvFilterMode=" + mYuvFilterMode +
+                '}';
+    }
 }

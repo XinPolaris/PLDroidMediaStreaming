@@ -72,6 +72,7 @@ public class ImportStreamingActivity extends AppCompatActivity {
 
         // 获取推流编码配置信息
         mEncodingConfig = (EncodingConfig) getIntent().getSerializableExtra(Config.NAME_ENCODING_CONFIG);
+        Log.i(TAG, "onCreate mEncodingConfig: "+ mEncodingConfig);
 
         Intent intent = getIntent();
         mPublishUrl = intent.getStringExtra(Config.PUBLISH_URL);
@@ -237,21 +238,21 @@ public class ImportStreamingActivity extends AppCompatActivity {
             }
 
             // 设置推流编码尺寸
-            if (mEncodingConfig.mIsVideoSizePreset) {
-                // 使用预设的视频尺寸
-                // 预设尺寸可以参考 https://developer.qiniu.com/pili/sdk/3719/PLDroidMediaStreaming-function-using#4 的 4.7 小节
-                mProfile.setEncodingSizeLevel(mEncodingConfig.mVideoSizePreset);
-            } else {
-                // 使用自定义视频编码尺寸，自定义配置优先级高于预设等级配置
-                mProfile.setPreferredVideoEncodingSize(mEncodingConfig.mVideoSizeCustomWidth, mEncodingConfig.mVideoSizeCustomHeight);
-            }
+//            if (mEncodingConfig.mIsVideoSizePreset) {
+//                // 使用预设的视频尺寸
+//                // 预设尺寸可以参考 https://developer.qiniu.com/pili/sdk/3719/PLDroidMediaStreaming-function-using#4 的 4.7 小节
+//                mProfile.setEncodingSizeLevel(mEncodingConfig.mVideoSizePreset);
+//            } else {
+//                // 使用自定义视频编码尺寸，自定义配置优先级高于预设等级配置
+                mProfile.setPreferredVideoEncodingSize(1280, 720);
+//            }
 
             // 设置推流 Orientation
-            mProfile.setEncodingOrientation(mEncodingConfig.mVideoOrientationPortrait ? StreamingProfile.ENCODING_ORIENTATION.PORT : StreamingProfile.ENCODING_ORIENTATION.LAND);
+            mProfile.setEncodingOrientation(StreamingProfile.ENCODING_ORIENTATION.LAND);
             // 软编场景下设置码流控制方式
             // QUALITY_PRIORITY 场景下为了保证推流质量，实际码率可能会高于目标码率
             // BITRATE_PRIORITY 场景下，会优先保证目标码率的稳定性
-            mProfile.setEncoderRCMode(mEncodingConfig.mVideoRateControlQuality ? StreamingProfile.EncoderRCModes.QUALITY_PRIORITY : StreamingProfile.EncoderRCModes.BITRATE_PRIORITY);
+            mProfile.setEncoderRCMode(StreamingProfile.EncoderRCModes.BITRATE_PRIORITY);
             // 设置是否开启帧率控制
             mProfile.setFpsControllerEnable(mEncodingConfig.mVideoFPSControl);
             mProfile.setYuvFilterMode(mEncodingConfig.mYuvFilterMode);
